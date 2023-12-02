@@ -6,36 +6,22 @@ def get_file_content(file_path: str):
 
 
 def get_calibration_data(line: str):
-    alphabetic_numerals = {
-        'one': '1',
-        'two': '2',
-        'three': '3',
-        'four': '4',
-        'five': '5',
-        'six': '6',
-        'seven': '7',
-        'eight': '8',
-        'nine': '9'
-    }
-
-    digit_pattern = f'(?=(\\d|{"|".join(alphabetic_numerals.keys())}))'
+    digit_patterns = ('^\\D*(\\d)', '(\\d)\\D*?$')
 
     digits = list()
 
-    numbers = re.findall(digit_pattern, line)
+    for i in range(len(digit_patterns)):
+        digit = re.search(digit_patterns[i], line)
 
-    if numbers is None or len(numbers) == 0:
-        raise 'Invalid calibration data input'
+        if digit == None or len(digit.groups()) != 1:
+            raise 'Invalid calibration data input'
+        else:
+            digits.append(digit.group(1))
 
     result = ''
 
-    digit_index = (0, -1)
-
-    for i in digit_index:
-        if numbers[i].isdigit():
-            result += numbers[i]
-        else:
-            result += alphabetic_numerals[numbers[i]]
+    for digit in digits:
+        result += digit
 
     return int(result)
 
@@ -44,6 +30,7 @@ def calculate_calibration_sum(lines: list):
     sum = 0
 
     for i in range(len(lines)):
+
         try:
             sum += get_calibration_data(lines[i])
 
@@ -58,7 +45,7 @@ try:
 
     result = calculate_calibration_sum(data)
 
-    if result is not None:
+    if result != None:
         print(f'Calculation completed, the sum is {result}')
 
 except Exception as e:
