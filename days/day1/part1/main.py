@@ -13,8 +13,8 @@ def get_calibration_data(line: str):
     for i in range(len(digit_patterns)):
         digit = re.search(digit_patterns[i], line)
 
-        if digit == None or len(digit.groups()) != 1:
-            raise 'Invalid calibration data input'
+        if digit is None or len(digit.groups()) != 1:
+            raise Exception('Invalid calibration data input')
         else:
             digits.append(digit.group(1))
 
@@ -35,7 +35,7 @@ def calculate_calibration_sum(lines: list):
             sum += get_calibration_data(lines[i])
 
         except Exception as e:
-            raise f'{e} occurred at line {i + 1}'
+            raise Exception('{e} occurred at line {i + 1}')
 
     return sum
 

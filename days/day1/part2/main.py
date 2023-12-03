@@ -25,7 +25,7 @@ def get_calibration_data(line: str):
     numbers = re.findall(digit_pattern, line)
 
     if numbers is None or len(numbers) == 0:
-        raise 'Invalid calibration data input'
+        raise Exception('Invalid calibration data input')
 
     result = ''
 
@@ -48,7 +48,7 @@ def calculate_calibration_sum(lines: list):
             sum += get_calibration_data(lines[i])
 
         except Exception as e:
-            raise f'{e} occurred at line {i + 1}'
+            raise Exception(f'{e} occurred at line {i + 1}')
 
     return sum
 
